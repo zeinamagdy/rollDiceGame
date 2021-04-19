@@ -10,16 +10,28 @@ const current0El = document.getElementById('current--0');
 const current1El = document.getElementById('current--1');
 const player0El = document.querySelector('.player--0');
 const player1El = document.querySelector('.player--1');
+const targetScore = 20;
 
+let scores, currentScore, activePlayer, playing;
 //Intial conditions
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add('hidden');
+const init = () => {
+  scores = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  playing = true;
 
-let scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-let playing = true;
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  current0El.textContent = 0;
+  current1El.textContent = 0;
+
+  diceEl.classList.add('hidden');
+  player1El.classList.remove('player--winner');
+  player1El.classList.remove('player--winner');
+  player0El.classList.add('player--active');
+  player1El.classList.remove('player--active');
+};
+init();
 
 // Switching players functionality
 const switchPlayer = () => {
@@ -55,6 +67,7 @@ const rollDice = () => {
 // Holding score functionality
 const finishGame = () => {
   playing = false;
+  diceEl.classList.add('hidden');
   document
     .querySelector(`.player--${activePlayer}`)
     .classList.add('player--winner');
@@ -70,7 +83,7 @@ const hodlingScore = () => {
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
     // Finsih the game
-    if (scores[activePlayer] >= 20) {
+    if (scores[activePlayer] >= targetScore) {
       finishGame();
     } else {
       //Switch to next players
@@ -78,5 +91,11 @@ const hodlingScore = () => {
     }
   }
 };
+
+const newGame = () => {
+  init();
+};
+
 rollDiceBtn.addEventListener('click', rollDice);
 holdBtn.addEventListener('click', hodlingScore);
+newGameBtn.addEventListener('click', newGame);
